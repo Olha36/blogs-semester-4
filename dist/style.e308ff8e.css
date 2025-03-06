@@ -1,0 +1,67 @@
+body {
+    background-image: url('/background-img.d3782b9a.jpg'); 
+    color: blanchedalmond;
+    font-weight: bold;
+}
+
+#createPostForm {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: "Josefin Sans", serif;
+}
+
+#titleInput,
+#contentInput {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 18px;
+    background: #f9f9f9;
+    transition: all 0.3s ease-in-out;
+}
+
+#titleInput:focus,
+#contentInput:focus {
+    border-color: #6a5acd;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(106, 90, 205, 0.3);
+}
+
+#contentInput {
+    height: 180px;
+    resize: vertical;
+}
+
+#heding1 {
+    text-align: center;
+    font-family: "Arsenal SC", serif;
+}
+
+h2, button, p, input, h3, textarea, ul, li {
+    font-family: "Arsenal SC", serif;
+}
+
+/* button {
+    background-color: #d47ef1; 
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+} */
+
+button{
+    border-radius: 89px;
+    color: blue;
+    height: 49px;
+    width: 129px;
+    background-color: brown;
+}
+
+/*# sourceMappingURL=/style.e308ff8e.css.map */
