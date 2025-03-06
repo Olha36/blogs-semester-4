@@ -1,7 +1,6 @@
 let postsArray = [];
 let template;
 
-// Отримання списку постів
 async function getPosts() {
   try {
     const response = await fetch("http://localhost:3000/posts");
@@ -45,7 +44,6 @@ async function createPost(title, content) {
   }
 }
 
-// Оновлення поста
 const updatePost = async (id, title, content) => {
   try {
     const response = await fetch(`http://localhost:3000/posts/${id}`, {
@@ -53,7 +51,7 @@ const updatePost = async (id, title, content) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, content }), // Send the post data as an object
+      body: JSON.stringify({ title, content }),
     });
 
     if (!response.ok) {
@@ -63,20 +61,17 @@ const updatePost = async (id, title, content) => {
     const updatedPost = await response.json();
     console.log("Updated post:", updatedPost);
 
-    // Optionally, update the postsArray locally to reflect the updated post
     postsArray = postsArray.map((post) =>
       post.id === id ? { ...post, title, content } : post
     );
-    renderPosts(postsArray); // Re-render the updated posts list
+    renderPosts(postsArray);
   } catch (error) {
     console.error("Error updating post:", error);
   }
 };
 
-// Видалення поста
 async function deletePost(id) {
   try {
-    // Send DELETE request to the server
     const response = await fetch(`http://localhost:3000/posts/${id}`, {
       method: "DELETE",
       headers: {
@@ -90,15 +85,13 @@ async function deletePost(id) {
       throw new Error("Failed to delete the post");
     }
 
-    // Remove the post from the local posts array after successful deletion
     postsArray = postsArray.filter((post) => post.id !== Number(id));
-    renderPosts(postsArray); // Re-render the posts list to reflect the change
+    renderPosts(postsArray);
   } catch (error) {
     console.error("Error deleting post", error);
   }
 }
 
-// Додавання коментаря до поста
 async function createComment(postId, commentText) {
   console.log(
     "🚨 Debugging createComment | postId:",
@@ -144,8 +137,6 @@ async function createComment(postId, commentText) {
   }
 }
 
-// Оновлення відображення постів на сторінці
-
 function renderPosts(posts) {
   const menuContainer = document.querySelector(".menuContainer");
 
@@ -156,7 +147,6 @@ function renderPosts(posts) {
   menuContainer.innerHTML = postTemplate;
 }
 
-// Обробник події для створення поста
 document.getElementById("createPostForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const title = document.getElementById("titleInput").value;
@@ -166,11 +156,6 @@ document.getElementById("createPostForm").addEventListener("submit", (e) => {
   document.getElementById("titleInput").value = "";
   document.getElementById("contentInput").value = "";
 });
-
-// Обробник події для редагування поста
-//   document.addEventListener('click', cb);
-
-// Оновлення поста
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("editPostButton")) {
@@ -185,7 +170,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Обробник події для видалення поста
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("deletePostButton")) {
     const id = event.target.getAttribute("data-id");
@@ -198,7 +182,6 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Обробник події для додавання коментаря
 document.addEventListener("submit", (event) => {
   if (event.target.classList.contains("createCommentForm")) {
     event.preventDefault();
@@ -217,7 +200,6 @@ document.addEventListener("submit", (event) => {
   }
 });
 
-// Запуск додатку
 async function startApp() {
   const posts = await getPosts();
   const sourceElement = document.querySelector(".menuTemplate");
@@ -230,8 +212,8 @@ async function startApp() {
     return;
   }
 
-  template = Handlebars.compile(source); // Move this here so template is available globally
-  renderPosts(postsArray); // No need to call renderPosts again in startApp
+  template = Handlebars.compile(source);
+  renderPosts(postsArray);
 }
 
 startApp();

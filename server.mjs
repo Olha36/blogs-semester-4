@@ -5,12 +5,9 @@ import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
-
 const app = express();
 
 app.use(cors());
-
-
 
 const port = 3000;
 
@@ -24,7 +21,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Get all posts
 app.get("/posts", (req, res) => {
   fs.readFile(
     path.join(__dirname, "public", "bd.json"),
@@ -40,7 +36,6 @@ app.get("/posts", (req, res) => {
   );
 });
 
-// Get a single post by ID
 app.get("/posts/:id", (req, res) => {
   const postId = Number(req.params.id);
   fs.readFile(
@@ -61,7 +56,6 @@ app.get("/posts/:id", (req, res) => {
   );
 });
 
-// Create a new post
 app.post("/posts", (req, res) => {
   const { title, content } = req.body;
 
@@ -81,7 +75,6 @@ app.post("/posts", (req, res) => {
       const db = JSON.parse(data);
       let newPostId = 1;
 
-      // Generate a new post ID: check if there are existing posts and assign the next ID.
       if (db.posts && db.posts.length > 0) {
         newPostId = db.posts[db.posts.length - 1].id + 1;
       }
@@ -111,10 +104,9 @@ app.post("/posts", (req, res) => {
   );
 });
 
-// Update a post
 app.put("/posts/:id", (req, res) => {
   const postId = Number(req.params.id);
-  const updatedPostData = req.body; // The updated post data from the client
+  const updatedPostData = req.body;
 
   fs.readFile(
     path.join(__dirname, "public", "bd.json"),
@@ -132,10 +124,8 @@ app.put("/posts/:id", (req, res) => {
         return res.status(404).send("Post not found");
       }
 
-      // Update the post data
       db.posts[postIndex] = { ...db.posts[postIndex], ...updatedPostData };
 
-      // Write the updated data back to the file
       fs.writeFile(
         path.join(__dirname, "public", "bd.json"),
         JSON.stringify(db, null, 2),
@@ -185,7 +175,6 @@ app.delete("/posts/:id", (req, res) => {
   );
 });
 
-// Add a comment to a post
 app.post("/posts/:id/comments", (req, res) => {
   const postId = Number(req.params.id);
 
