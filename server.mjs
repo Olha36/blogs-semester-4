@@ -3,8 +3,15 @@ import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import cors from "cors";
+
 
 const app = express();
+
+app.use(cors());
+
+
+
 const port = 3000;
 
 const __filename = fileURLToPath(import.meta.url);

@@ -4,7 +4,8 @@ let template;
 // Отримання списку постів
 async function getPosts() {
   try {
-    const response = await fetch("/bd.json");
+    const response = await fetch("http://localhost:3000/posts");
+
     console.log("Response status:", response.status);
 
     if (!response.ok) {
@@ -13,8 +14,8 @@ async function getPosts() {
 
     const data = await response.json();
     console.log("Fetched data:", data);
-    postsArray = data.posts;
-    
+    postsArray = data;
+
   } catch (error) {
     console.error("Error fetching or processing data", error);
   }
@@ -22,7 +23,7 @@ async function getPosts() {
 
 async function createPost(title, content) {
   try {
-    const response = await fetch("/posts", {
+    const response = await fetch("http://localhost:3000/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,6 +38,7 @@ async function createPost(title, content) {
 
     const newPost = await response.json();
     postsArray.push(newPost);
+    console.log("Rendering posts with data:", postsArray);
     renderPosts(postsArray);
   } catch (error) {
     console.log(error);
@@ -71,13 +73,11 @@ const updatePost = async (id, title, content) => {
   }
 };
 
-
-
 // Видалення поста
 async function deletePost(id) {
   try {
     // Send DELETE request to the server
-    const response = await fetch(`/posts/${id}`, {
+    const response = await fetch(`http://localhost:3000/posts/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -98,10 +98,14 @@ async function deletePost(id) {
   }
 }
 
-
 // Додавання коментаря до поста
 async function createComment(postId, commentText) {
-  console.log("🚨 Debugging createComment | postId:", postId, "Comment:", commentText);
+  console.log(
+    "🚨 Debugging createComment | postId:",
+    postId,
+    "Comment:",
+    commentText
+  );
 
   if (!postId || postId < 1) {
     console.error("❌ Invalid post ID:", postId);
@@ -109,16 +113,21 @@ async function createComment(postId, commentText) {
   }
 
   try {
-    const response = await fetch(`/posts/${postId}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content: commentText }),
-    });
+    const response = await fetch(
+      `http://localhost:3000/posts/${postId}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: commentText }),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error(`Failed to create comment. Server responded with status ${response.status}`);
+      throw new Error(
+        `Failed to create comment. Server responded with status ${response.status}`
+      );
     }
 
     const result = await response.json();
@@ -134,8 +143,6 @@ async function createComment(postId, commentText) {
     console.error("❌ Error creating comment:", error);
   }
 }
-
-
 
 // Оновлення відображення постів на сторінці
 
@@ -155,6 +162,9 @@ document.getElementById("createPostForm").addEventListener("submit", (e) => {
   const title = document.getElementById("titleInput").value;
   const content = document.getElementById("contentInput").value;
   createPost(title, content);
+
+  document.getElementById("titleInput").value = "";
+  document.getElementById("contentInput").value = "";
 });
 
 // Обробник події для редагування поста
@@ -181,13 +191,12 @@ document.addEventListener("click", (event) => {
     const id = event.target.getAttribute("data-id");
     if (id) {
       console.log("Delete button clicked for post ID:", id);
-      deletePost(id); 
+      deletePost(id);
     } else {
       console.error("No valid post ID found for delete operation.");
     }
   }
 });
-
 
 // Обробник події для додавання коментаря
 document.addEventListener("submit", (event) => {
@@ -213,7 +222,9 @@ async function startApp() {
   const posts = await getPosts();
   const sourceElement = document.querySelector(".menuTemplate");
 
-  const source = sourceElement.innerHTML || sourceElement.content.firstElementChild.innerHTML;
+  const source =
+    sourceElement.innerHTML ||
+    sourceElement.content.firstElementChild.innerHTML;
   if (!source.trim()) {
     console.error("Template source is empty");
     return;
