@@ -49,17 +49,11 @@ h2, button, p, input, h3, textarea, ul, li {
     font-family: "Arsenal SC", serif;
 }
 
-/* button {
-    background-color: #d47ef1; 
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-} */
 
 button{
     border-radius: 89px;
-    color: blue;
+    background-color: #d47ef1; 
+    color: white;
     height: 49px;
     width: 129px;
-    background-color: brown;
 }
