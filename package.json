@@ -19,6 +19,7 @@
     "file-uri-to-path": "^2.0.0",
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.8",
+    "parcel-reporter-clean-dist": "^1.0.4",
     "path": "^0.12.7"
   }
 }

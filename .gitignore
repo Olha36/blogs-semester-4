@@ -1,3 +1,5 @@
 node_modules
 bin
+.parcel-cache
+dist
 .cache
