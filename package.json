@@ -1,15 +1,18 @@
 {
   "name": "blog-posts",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "start": "npx parcel public/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npx parcel public/index.html\" \"node server.mjs\"",
+    "build": "parcel build public/index.html --dist-dir dist",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "parcel-bundler": "^1.12.5"
   },
   "dependencies": {
@@ -18,6 +21,7 @@
     "express": "^4.21.2",
     "file-uri-to-path": "^2.0.0",
     "fs": "^0.0.1-security",
+    "gh-pages": "^6.3.0",
     "handlebars": "^4.7.8",
     "parcel-reporter-clean-dist": "^1.0.4",
     "path": "^0.12.7"
